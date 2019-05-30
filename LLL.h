@@ -12,20 +12,22 @@
 
 using namespace std;
 
-struct node{
-  Student* student;
+struct node{                    //LLL node
+  Student* student;             
   node* next;
 };
   
 class LLL{
  public:
-  LLL();
-  ~LLL();
-  int inset(Student* student);
-  Student* remove(int id);
+  LLL();                        //constructor
+  ~LLL();                       //destructor
+  int insert(Student* student); //adds student to list
+  Student* find(int id);        //locates and returns Student* pointer
+  Student* remove(int id);      //removes student
+  Student* pop();               //returns & removes head
  private:
-  node* head;
-  int size;
+  node* head;                  //head of list
+  int size;                    //length of list
 };
 
 #endif

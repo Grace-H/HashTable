@@ -40,7 +40,7 @@ int Student::getId(){
 }
 
 //returns GPA
-float getGPA(){
+float Student::getGPA(){
   return gpa;
 }
 

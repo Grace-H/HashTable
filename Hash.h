@@ -16,7 +16,7 @@ class Hash{
   ~Hash();
   int getPrime(int size);  //gets next smallest prime from table size
   int addStudent(char* first, char* last, int id, float gpa);
-  int insert(Stuent* student);
+  int insert(Student* student, LLL* table);
   Student* retrieve(int id);
   int hash(int id);
   int remove(int id);

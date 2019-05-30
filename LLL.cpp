@@ -53,6 +53,20 @@ int LLL::insert(Student* student){
   return 0;
 }
 
+//returns student pointer
+//does not remove student
+Student* LLL::find(int id){
+  //find student
+  node* cur = head;
+  while(cur != NULL){
+    if(cur->student->getId() == id){
+      return cur->student;
+    }
+  }
+  //student DNE
+  return NULL;
+}
+
 //remove a student from list
 //returns NULL if student didn't exist
 Student* LLL::remove(int id){
@@ -70,11 +84,23 @@ Student* LLL::remove(int id){
       }
       //return the student
       Student* student = cur->student;
-      delete node;
+      delete cur;
       return student;
     }
     cur = cur->next;
   }
   //no student was found
   return NULL;
+}
+
+Student* LLL::pop(){
+  if(head != NULL){
+    Student* stu = head->student;
+    head = head->next;
+    delete head;
+    return stu;
+  }
+  else{
+    return NULL;
+  }
 }
