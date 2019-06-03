@@ -21,6 +21,8 @@ class Hash{
   int hash(int id);
   int remove(int id);
   int reHash();
+  void displayWhole();
+  void display();
  private:
   int prime;            //prime used for hashing function
   int cursize;          //current number of items in table

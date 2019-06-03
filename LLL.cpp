@@ -23,7 +23,8 @@ LLL::~LLL(){
 }
 
 //add a student to list
-//returns 1 if more than 3 in chain
+//returns 1 if more than 3 in list
+//returns 2 if there is already student with that id
 int LLL::insert(Student* student){
   //create a new node
   node* n = new node;
@@ -38,7 +39,15 @@ int LLL::insert(Student* student){
   else{
     node* cur = head;
     while(cur->next != NULL){
+      cout << "cur->student->getId(): " << cur->student->getId() << endl;
+      if(cur->student->getId() == student->getId()){
+	cout << "STUDENT IDS ARE THE SAME" << endl;
+	return 2;
+      }
       cur = cur->next;
+    }
+    if(cur->student->getId() == student->getId()){
+      return 2;
     }
     cur->next = n;
   }
@@ -94,13 +103,37 @@ Student* LLL::remove(int id){
 }
 
 Student* LLL::pop(){
+  cout << "size of list: " << size << endl;
+  cout << "list: ";
+  display();
+  cout << endl;
   if(head != NULL){
     Student* stu = head->student;
+    node* cur = head;
     head = head->next;
-    delete head;
+    delete cur;
+    size--;
     return stu;
   }
   else{
     return NULL;
+  }
+}
+
+void LLL::display(){
+  node* cur = head;
+  while(cur){
+    cout << cur->student->getId() << ", ";
+    cur = cur->next;
+  }
+}
+
+//returns true if list is empty
+bool LLL::isEmpty(){
+  if(head == NULL){
+    return true;
+  }
+  else{
+    return false;
   }
 }

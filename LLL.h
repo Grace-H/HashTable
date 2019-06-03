@@ -25,6 +25,8 @@ class LLL{
   Student* find(int id);        //locates and returns Student* pointer
   Student* remove(int id);      //removes student
   Student* pop();               //returns & removes head
+  void display();
+  bool isEmpty();
  private:
   node* head;                  //head of list
   int size;                    //length of list

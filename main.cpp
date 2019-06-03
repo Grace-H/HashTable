@@ -11,23 +11,72 @@
 
 using namespace std;
 
+int aStudent(Hash* table);
+int dStudent(Hash* table);
+int aRandStudent(Hash* table);
+
 int main(){
+  char* addstr = new char[20];
+  char* deletestr = new char[20];
+  char* printstr = new char[20];
+  char* quitstr = new char[20];
+  char* randomstr = new char[20];
+
+  strcpy(addstr, "ADD");
+  strcpy(deletestr, "DELETE");
+  strcpy(printstr, "PRINT");
+  strcpy(quitstr, "QUIT");
+  strcpy(randomstr, "RANDOM");
+  
+  char* input = new char[256];
+  
+  cout << "node: commands do not have to be uppercase" << endl;
+
   Hash* table = new Hash();
-  table->getPrime(100);
-  table->getPrime(200);
-  table->getPrime(400);
 
-  char* first = new char[20];
-  char* last = new char[20];
-  strcpy(first, "Grace");
-  strcpy(last, "Hi");
+  bool go = true;
+  while(go){
+    //get input
+    cout << "'ADD', 'DELETE', 'PRINT', add 'RANDOM' student, or 'QUIT'?" << endl;
+    cin.get(input, 256);
+    cin.get();
 
-  table->addStudent(first, last, 123456, 2.34);
-  table->addStudent(first, last, 654321, 4.45);
+    //uppercase
+    for(int i = 0; i < strlen(input); i++){
+      input[i] = toupper(input[i]);
+    }
 
-  Student* one = table->retrieve(123456);
-  Student* two = table->retrieve(654321);
-  cout << one->getId() << endl;
-  cout << two->getId() << endl;
+    //identify command a perform action
+    //ADD
+    if(strcmp(addstr, input) == 0){
+      aStudent(table);
+    }
+    //DELETE
+    else if(strcmp(deletestr, input) == 0){
+      dStudent(table);
+    }
+    //PRINT
+    else if(strcmp(printstr, input) == 0){
+      table->display();
+    }
+    //ADD RANDOM STUDENT
+    else if(strcmp(randomstr, input) == 0){
+      aRandStudent(table);
+    }
+    //QUIT
+    else if(strcmp(quitstr, input) == 0){
+      go = false;
+      delete [] addstr;
+      delete [] deletestr;
+      delete [] randstr;
+      delete [] printstr;
+      delete [] quitstr;
+      delete [] input;
+      delete table;
+    }
+    //not recognized
+    else{
+      cout << "not an option" << endl;
+    }
   return 0;
 }

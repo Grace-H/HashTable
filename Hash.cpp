@@ -35,15 +35,21 @@ Hash::getPrime(int size){
 
 //creates and adds a student to table
 //calls insert and rehashes if there are too many collisions
+//returns 1 if student id already exists
 int Hash::addStudent(char* first, char* last, int id, float gpa){
   Student* stu = new Student(first, last, id, gpa);
   int error = insert(stu, table);
+  cout << "Before rehashing checks: " << endl;
+  display();
+  if(error == 2){
+    delete stu;
+    return 1;
+  }
   if(error == 1){
-    //rehash
+    reHash();
+    display();
   }
-  if(cursize >= maxsize / 2){
-    //rehash
-  }
+  return 0;
 }
 
 //insert a student into the table
@@ -53,7 +59,9 @@ int Hash::insert(Student* student, LLL* table){
   //if there is already a LLL at index
   int error = 0;
   error = table[index].insert(student);
-  cur++;
+  if(error != 2){
+    cursize++;
+  }
   return error;
 }
 
@@ -74,11 +82,13 @@ int Hash::reHash(){
   prime = getPrime(maxsize);
   
   //add all items to new table
-  int error = 0; //more than three in a slot
+  int error = 0; //!1 = more than three in a slot
   for(int i = 0; i < maxsize / 2; i++){
     //empty slot
     bool empty = false;
+    int pops = 0;
     while(!empty){
+      pops++;
       Student* stu = table[i].pop();
       if(stu == NULL){
 	empty = true;
@@ -90,6 +100,7 @@ int Hash::reHash(){
 	}
       }
     }
+    cout << "pops: " << pops << endl;
   }
   LLL* oldTable = table;
   table = newtable;
@@ -97,6 +108,26 @@ int Hash::reHash(){
   
   //if there were three+ collisions
   if(error != 0){
+    cout << "REHASHING BECAUSE THERE WERE COLLISIONS" << endl;
     reHash();
+  }
+
+  return error;
+}
+
+void Hash::displayWhole(){
+  for(int i = 0; i < maxsize; i++){
+    cout << i << ": ";
+    table[i].display();
+    cout << endl;
+  }
+}
+
+void Hash::display(){
+  for(int i = 0; i < maxsize; i++){
+    if(!table[i].isEmpty()){
+      table[i].display();
+      cout << endl;
+    }
   }
 }

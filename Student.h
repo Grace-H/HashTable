@@ -19,7 +19,7 @@ class Student{
   char* getLast();
   int getId();
   float getGPA();
-  int display();
+  void display();
  private:
   char* first;
   char* last;
