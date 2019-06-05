@@ -128,6 +128,14 @@ void LLL::display(){
   }
 }
 
+void LLL::displayStu(){
+  node* cur = head;
+  while(cur){
+    cur->student->display();
+    cur = cur->next;
+  }
+}
+
 //returns true if list is empty
 bool LLL::isEmpty(){
   if(head == NULL){

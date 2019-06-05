@@ -48,6 +48,6 @@ float Student::getGPA(){
 //returns 1 if either name DNE
 void Student::display(){
   if(first != NULL && last != NULL){
-    cout << first << " " << last << ", " << id << ", " << gpa;
+    cout << first << " " << last << ", " << id << ", " << gpa << endl;;
   }
 }

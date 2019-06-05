@@ -117,9 +117,7 @@ int Hash::reHash(){
 
 void Hash::displayWhole(){
   for(int i = 0; i < maxsize; i++){
-    cout << i << ": ";
-    table[i].display();
-    cout << endl;
+    table[i].displayStu();
   }
 }
 
@@ -127,7 +125,6 @@ void Hash::display(){
   for(int i = 0; i < maxsize; i++){
     if(!table[i].isEmpty()){
       table[i].display();
-      cout << endl;
     }
   }
 }

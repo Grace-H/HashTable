@@ -26,6 +26,7 @@ class LLL{
   Student* remove(int id);      //removes student
   Student* pop();               //returns & removes head
   void display();
+  void displayStu();
   bool isEmpty();
  private:
   node* head;                  //head of list
