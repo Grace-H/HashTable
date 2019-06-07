@@ -57,7 +57,7 @@ int main(){
     cout << firstNames[i] << ", ";
   }
   cout << endl;
-  delete [] first;
+  delete [] str;
   
   //last
   char* last = new char[100000];
@@ -80,8 +80,6 @@ int main(){
     cout << lastNames[i] << ",";
   }
   cout << endl;
-  delete [] last;
-  delete [] str;
 
   char* input = new char[256];
   

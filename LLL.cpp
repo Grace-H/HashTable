@@ -85,7 +85,7 @@ Student* LLL::remove(int id){
   while(cur != NULL){
     if(cur->student->getId() == id){
       //change pointers
-      if(prev = NULL){
+      if(prev == NULL){
 	head = cur->next;
       }
       else{

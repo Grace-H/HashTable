@@ -17,7 +17,7 @@ Hash::~Hash(){
 }
 
 //returns prime below current table size
-Hash::getPrime(int size){
+int Hash::getPrime(int size){
   bool found = true;
   int i = size;
   do{
