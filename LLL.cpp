@@ -39,9 +39,7 @@ int LLL::insert(Student* student){
   else{
     node* cur = head;
     while(cur->next != NULL){
-      cout << "cur->student->getId(): " << cur->student->getId() << endl;
       if(cur->student->getId() == student->getId()){
-	cout << "STUDENT IDS ARE THE SAME" << endl;
 	return 2;
       }
       cur = cur->next;
@@ -102,11 +100,8 @@ Student* LLL::remove(int id){
   return NULL;
 }
 
+//removes first node* and returns student
 Student* LLL::pop(){
-  cout << "size of list: " << size << endl;
-  cout << "list: ";
-  display();
-  cout << endl;
   if(head != NULL){
     Student* stu = head->student;
     node* cur = head;
@@ -120,6 +115,7 @@ Student* LLL::pop(){
   }
 }
 
+//print ids of students in list, comma-separated
 void LLL::display(){
   node* cur = head;
   while(cur){
@@ -128,6 +124,7 @@ void LLL::display(){
   }
 }
 
+//prints complete info of students in list
 void LLL::displayStu(){
   node* cur = head;
   while(cur){

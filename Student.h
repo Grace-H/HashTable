@@ -13,18 +13,18 @@ using namespace std;
 
 class Student{
  public:
-  Student(char* first, char* last, int id, float gpa);
-  ~Student();
-  char* getFirst();
-  char* getLast();
-  int getId();
-  float getGPA();
-  void display();
+  Student(char* first, char* last, int id, float gpa);  //constructor
+  ~Student();     //destructor
+  char* getFirst();   //returns first name
+  char* getLast();    //returns last name
+  int getId();        //returns id
+  float getGPA();     //returns GPA
+  void display();     //displays student info
  private:
-  char* first;
-  char* last;
-  int id;
-  float gpa;
+  char* first;        //first name
+  char* last;         //last name
+  int id;             //id
+  float gpa;          //gpa
 };
 
 #endif

@@ -1,4 +1,5 @@
-/*Hash table
+/*Student List: add, remove, print, randomly generate students
+ *implements using a hash table as the ADT
  *Author: Grace-H
  *Date: 23 May 2019
  */
@@ -10,15 +11,15 @@
 #include <cstdlib>
 #include <ctime>
 #include "Hash.h"
-#include "Student.h" //delete after testing
 
 using namespace std;
 
-int aStudent(Hash* table);
 int dStudent(Hash* table);
-int aRand(Hash* table, char* lastNames[100], char* firstNames[100], int tFirst, int tLast);
+int aStudent(Hash* table);
+int aRand(Hash* table, char* lastNames[100], char* firstNames[100], int tFirst, int tLast, int curId);
 
 int main(){
+  //command strings
   char* addstr = new char[20];
   char* deletestr = new char[20];
   char* printstr = new char[20];
@@ -36,52 +37,44 @@ int main(){
   char* first = new char[100000];
   ifstream is1("first.txt");
   is1.get(first, 100000);
-  cout << first << endl;
   is1.close();
-  char* firstNames[100];
+  //convert to char*[]
+  char** firstNames = new char*[100];
   int totalFirst = 0;
   char* str;
   str = strtok(first, ",");
   while(str != NULL){
     char* name = new char[20];
-    //cout << "str: " << str << endl;
-    //cout << "first names 0: " << firstNames[0] << endl;
     strcpy(name, str);
-    //    cout << "made it" << endl;
     firstNames[totalFirst] = name;
     str = strtok(NULL, ",");
     totalFirst++;
   }
-  cout << "NAMES ARRAY: " << endl;
-  for(int i = 0; i < totalFirst; i++){
-    cout << firstNames[i] << ", ";
-  }
-  cout << endl;
+
   delete [] first;
   
   //last
   char* last = new char[100000];
   ifstream is2("last.txt");
   is2.get(last, 100000);
-  cout << last << endl;
   is2.close();
-  char* lastNames[100];
+  //convert to char*[]
+  char** lastNames = new char*[100];
   int totalLast = 0;
-  str = strtok(last, " ");
+  str = strtok(last, ",");
   while(str != NULL){
     char* name = new char[20];
     strcpy(name, str);
-    str = strtok(NULL, " ");
+    str = strtok(NULL, ",");
     lastNames[totalLast] = name;
     totalLast++;
   }
-  cout << "LAST NAMES ARRAY: " << endl;
-  for(int i = 0; i < totalLast; i++){
-    cout << lastNames[i] << ",";
-  }
-  cout << endl;
+
   delete [] last;
   delete [] str;
+
+  //current student id
+  int curId = 100000;
 
   char* input = new char[256];
   
@@ -108,7 +101,7 @@ int main(){
     }
     //DELETE
     else if(strcmp(deletestr, input) == 0){
-      //dStudent(table);
+      dStudent(table);
     }
     //PRINT
     else if(strcmp(printstr, input) == 0){
@@ -116,7 +109,7 @@ int main(){
     }
     //ADD RANDOM STUDENT
     else if(strcmp(randomstr, input) == 0){
-      aRand(table, firstNames, lastNames, totalFirst, totalLast);
+      curId = aRand(table, firstNames, lastNames, totalFirst, totalLast, curId);
     }
     //QUIT
     else if(strcmp(quitstr, input) == 0){
@@ -137,68 +130,94 @@ int main(){
   return 0;
 }
 
+//delete a student at ID
+int dStudent(Hash* table){
+  //get ID
+  char* input = new char[256];
+  cout << "Enter student ID: " << endl;
+  cin.get(input, 256);
+  cin.get();
+  int id = atoi(input);
+  
+  //delete student
+  int error = table->remove(id);
+  if(error == 1){
+    cout << "Student did not exist." << endl;
+  }
+  delete [] input;
+  return 0;
+}
+
+//ask for student info and add student
+//notifies user if ID already in use
 int aStudent(Hash* table){
+  //first  
   char* first = new char[256];
   cout << "First name: " << endl;
   cin.get(first, 256);
   cin.get();
 
+  //last
   char* last = new char[256];
   cout << "Last name: " << endl;
   cin.get(last, 256);
   cin.get();
 
+  //ID
   char* input = new char[256];
   cout << "Student ID: " << endl;
   cin.get(input, 256);
   cin.get();
   int id = atoi(input);
 
+  //GPA
   cout << "GPA: " << endl;
   cin.get(input, 256);
   cin.get();
   float gpa = atof(input);
 
-  table->addStudent(first, last, id, gpa);
+  int error = table->addStudent(first, last, id, gpa);
+  if(error != 0){
+    cout << "Student Id already exists. Student not created." << endl;
+    delete [] first;
+    delete [] last;
+  }
+
   delete [] input;
   return 0;
 }
 
-int aRand(Hash* table, char* firstNames[100], char* lastNames[100], int tFirst, int tLast){
+//asks for number of random students to add, and adds them
+//tLast is total last names, same for first
+//returns new id value
+int aRand(Hash* table, char* firstNames[100], char* lastNames[100], int tFirst, int tLast, int curId){
   char* input = new char[256];
   cout << "How many students?" << endl;
   cin.get(input, 256);
   cin.get();
   int i = atoi(input);
   delete [] input;
-  cout << "last names passed in:" << endl;
-  for(int i = 0; i < tLast; i++){
-    cout << lastNames[i] << ", ";
-  }
 
-  cout << "last first passed in:" << endl;
-  for(int i = 0; i < tFirst; i++){
-    cout << firstNames[i] << ", ";
-  }
-
+  //generate random students
   srand(time(NULL));
   for(int j = 0; j < i; j++){
     //random first and last names
     int firstInt = rand() % tFirst;
-    cout << "firstInt: " << firstInt << endl;
     char* first = firstNames[firstInt];
-    cout << "first: " << first << endl;
     int lastInt = rand() % tLast;
     char* last = lastNames[lastInt];
-    cout << "last: " << last << endl;
 
-    //random id & gpa
-    int id = rand() % 899999 + 100000;
-    cout << "RAND_MAX: " << RAND_MAX << endl;
-    float gpa = rand() / RAND_MAX * 4.00;
-    cout << "GPA: " << gpa << endl;
-    
-    table->addStudent(first, last, id, gpa);
+    //random gpa
+    /*method for generating random float btwn 0.0 and X
+     *posted by John Dibling 
+     *https://stackoverflow.com/questions/686353/random-float-number-generation
+     */
+    float gpa = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/4)) + 1;
+    int error = table->addStudent(first, last, curId, gpa);
+    while(error != 0){
+      curId++;
+      error = table->addStudent(first, last, curId, gpa);
+    }
   }
-  return 0;
+  return curId++;
 }

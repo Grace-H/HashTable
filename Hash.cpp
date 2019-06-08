@@ -1,9 +1,16 @@
+/*Hash table class
+ *Hash function: id % prime below table size
+ *Author: Grace Hunter
+ *Date: 07 June 2019
+ */
+
 #include <iostream>
 #include <cstring>
 #include "Hash.h"
 
 using namespace std;
 
+//constructor
 Hash::Hash(){
   maxsize = 100;
   cursize = 0;
@@ -11,9 +18,17 @@ Hash::Hash(){
   table = new LLL[maxsize];
 }
 
+//destructor
 Hash::~Hash(){
   //remove all linked lists
-  //delete table
+  for(int i = 0; i < maxsize; i++){
+    bool empty = false;
+    while(!empty){
+      table[i].pop();
+      empty = table[i].isEmpty();
+    }
+  }
+
 }
 
 //returns prime below current table size
@@ -25,7 +40,6 @@ int Hash::getPrime(int size){
     i--;
     for(int j = 2; j <= i / 2; j++){
       if(i % j == 0){
-	//cout << i << "%" << j << "=" << i % j << endl;
 	found = false;
       }
     }
@@ -39,15 +53,12 @@ int Hash::getPrime(int size){
 int Hash::addStudent(char* first, char* last, int id, float gpa){
   Student* stu = new Student(first, last, id, gpa);
   int error = insert(stu, table);
-  cout << "Before rehashing checks: " << endl;
-  display();
   if(error == 2){
     delete stu;
     return 1;
   }
   if(error == 1){
     reHash();
-    display();
   }
   return 0;
 }
@@ -71,10 +82,27 @@ Student* Hash::retrieve(int id){
   return table[index].find(id);
 }
 
+//Hash function
+//index = id % prime below table size
 int Hash::hash(int id){
   return id % prime;
 }
 
+//deletes student by id
+//returns 1 if student DNE
+int Hash::remove(int id){
+  int index = hash(id);
+  Student* todelete = table[index].remove(id);
+  //if student did not exist
+  if(todelete == NULL){
+    return 1;
+  }
+  cursize--;
+  delete todelete;
+  return 0;
+}
+
+//create a new hash table twice the size until collisions are less that 3
 int Hash::reHash(){
   //create a table 2X size
   maxsize = maxsize * 2;
@@ -86,9 +114,7 @@ int Hash::reHash(){
   for(int i = 0; i < maxsize / 2; i++){
     //empty slot
     bool empty = false;
-    int pops = 0;
     while(!empty){
-      pops++;
       Student* stu = table[i].pop();
       if(stu == NULL){
 	empty = true;
@@ -100,27 +126,24 @@ int Hash::reHash(){
 	}
       }
     }
-    cout << "pops: " << pops << endl;
   }
-  LLL* oldTable = table;
   table = newtable;
-  delete oldTable;
   
   //if there were three+ collisions
   if(error != 0){
-    cout << "REHASHING BECAUSE THERE WERE COLLISIONS" << endl;
     reHash();
   }
-
   return error;
 }
 
+//displays list of students
 void Hash::displayWhole(){
   for(int i = 0; i < maxsize; i++){
     table[i].displayStu();
   }
 }
 
+//displays all id numbers comma-separated
 void Hash::display(){
   for(int i = 0; i < maxsize; i++){
     if(!table[i].isEmpty()){

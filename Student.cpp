@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cstring>
 #include <cctype>
+#include <iomanip>
 #include "Student.h"
 
 using namespace std;
@@ -20,8 +21,6 @@ Student::Student(char* newfirst, char* newlast, int newid, float newgpa){
 
 //destructor
 Student::~Student(){
-  delete [] first;
-  delete [] last;
 }
 
 //returns first name
@@ -48,6 +47,6 @@ float Student::getGPA(){
 //returns 1 if either name DNE
 void Student::display(){
   if(first != NULL && last != NULL){
-    cout << first << " " << last << ", " << id << ", " << gpa << endl;;
+    cout << first << " " << last << ", " << id << ", " << setprecision(2) << fixed << gpa << endl;;
   }
 }

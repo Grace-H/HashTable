@@ -25,9 +25,9 @@ class LLL{
   Student* find(int id);        //locates and returns Student* pointer
   Student* remove(int id);      //removes student
   Student* pop();               //returns & removes head
-  void display();               //print id numbers
-  void displayStu();            //print all student info
-  bool isEmpty();               //returns 0 if nothing in list
+  void display();
+  void displayStu();
+  bool isEmpty();
  private:
   node* head;                  //head of list
   int size;                    //length of list

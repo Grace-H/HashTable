@@ -85,7 +85,7 @@ Student* LLL::remove(int id){
   while(cur != NULL){
     if(cur->student->getId() == id){
       //change pointers
-      if(prev = NULL){
+      if(prev == NULL){
 	head = cur->next;
       }
       else{
@@ -102,11 +102,8 @@ Student* LLL::remove(int id){
   return NULL;
 }
 
+//removes first node* and returns student
 Student* LLL::pop(){
-  cout << "size of list: " << size << endl;
-  cout << "list: ";
-  display();
-  cout << endl;
   if(head != NULL){
     Student* stu = head->student;
     node* cur = head;
@@ -120,6 +117,7 @@ Student* LLL::pop(){
   }
 }
 
+//print ids of students in list, comma-separated
 void LLL::display(){
   node* cur = head;
   while(cur){
@@ -128,6 +126,7 @@ void LLL::display(){
   }
 }
 
+//prints complete info of students in list
 void LLL::displayStu(){
   node* cur = head;
   while(cur){
